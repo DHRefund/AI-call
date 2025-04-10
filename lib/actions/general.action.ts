@@ -11,10 +11,7 @@ export async function createFeedback(params: CreateFeedbackParams) {
 
   try {
     const formattedTranscript = transcript
-      .map(
-        (sentence: { role: string; content: string }) =>
-          `- ${sentence.role}: ${sentence.content}\n`
-      )
+      .map((sentence: { role: string; content: string }) => `- ${sentence.role}: ${sentence.content}\n`)
       .join("");
 
     const { object } = await generateObject({
@@ -72,9 +69,7 @@ export async function getInterviewById(id: string): Promise<Interview | null> {
   return interview.data() as Interview | null;
 }
 
-export async function getFeedbackByInterviewId(
-  params: GetFeedbackByInterviewIdParams
-): Promise<Feedback | null> {
+export async function getFeedbackByInterviewId(params: GetFeedbackByInterviewIdParams): Promise<Feedback | null> {
   const { interviewId, userId } = params;
 
   const querySnapshot = await db
@@ -90,9 +85,7 @@ export async function getFeedbackByInterviewId(
   return { id: feedbackDoc.id, ...feedbackDoc.data() } as Feedback;
 }
 
-export async function getLatestInterviews(
-  params: GetLatestInterviewsParams
-): Promise<Interview[] | null> {
+export async function getLatestInterviews(params: GetLatestInterviewsParams): Promise<Interview[] | null> {
   const { userId, limit = 20 } = params;
 
   const interviews = await db
@@ -109,14 +102,9 @@ export async function getLatestInterviews(
   })) as Interview[];
 }
 
-export async function getInterviewsByUserId(
-  userId: string
-): Promise<Interview[] | null> {
-  const interviews = await db
-    .collection("interviews")
-    .where("userId", "==", userId)
-    .orderBy("createdAt", "desc")
-    .get();
+export async function getInterviewsByUserId(userId: string): Promise<Interview[] | null> {
+  console.log("userId  getInterviewsByUserId", userId);
+  const interviews = await db.collection("interviews").where("userId", "==", userId).orderBy("createdAt", "desc").get();
 
   return interviews.docs.map((doc) => ({
     id: doc.id,

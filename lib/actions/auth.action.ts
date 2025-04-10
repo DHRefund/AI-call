@@ -32,7 +32,7 @@ export async function signUp(params: SignUpParams) {
     // check if user exists in db
     const userRecord = await db.collection("users").doc(uid).get();
     if (userRecord.exists) {
-      console.log("userRecord signUp", userRecord);
+      // console.log("userRecord signUp", userRecord);
       return {
         success: false,
         message: "User already exists. Please sign in.",
@@ -46,7 +46,7 @@ export async function signUp(params: SignUpParams) {
       // profileURL,
       // resumeURL,
     });
-    console.log("check db>>> ok", res);
+    // console.log("check db>>> ok", res);
 
     return {
       success: true,
@@ -75,7 +75,7 @@ export async function signIn(params: SignInParams) {
 
   try {
     const userRecord = await auth.getUserByEmail(email);
-    console.log("userRecord signIn", userRecord);
+    // console.log("userRecord signIn", userRecord);
     if (!userRecord)
       return {
         success: false,
@@ -113,7 +113,8 @@ export async function getCurrentUser(): Promise<User | null> {
     // get user info from db
     const userRecord = await db.collection("users").doc(decodedClaims.uid).get();
     if (!userRecord.exists) return null;
-    console.log("userRecord getCurrentUser", userRecord);
+    // console.log("userRecord getCurrentUser", userRecord);
+    // console.log("userRecord id", userRecord.id);
     return {
       ...userRecord.data(),
       id: userRecord.id,

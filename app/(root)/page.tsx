@@ -9,11 +9,15 @@ import { getInterviewsByUserId, getLatestInterviews } from "@/lib/actions/genera
 
 async function Home() {
   const user = await getCurrentUser();
+  console.log("user home page", user);
 
   const [userInterviews, allInterview] = await Promise.all([
     getInterviewsByUserId(user?.id!),
     getLatestInterviews({ userId: user?.id! }),
   ]);
+
+  // console.log("userInterviews", userInterviews);
+  // console.log("allInterview", allInterview);
 
   const hasPastInterviews = userInterviews?.length! > 0;
   const hasUpcomingInterviews = allInterview?.length! > 0;
