@@ -3,6 +3,14 @@
 import { auth, db } from "@/firebase/admin";
 import { cookies } from "next/headers";
 
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  profileURL?: string;
+  resumeURL?: string;
+}
+
 // Session duration (1 week)
 const SESSION_DURATION = 60 * 60 * 24 * 7;
 
@@ -46,7 +54,7 @@ export async function signUp(params: SignUpParams) {
       // profileURL,
       // resumeURL,
     });
-    // console.log("check db>>> ok", res);
+    console.log("check db>>> ok", res);
 
     return {
       success: true,
@@ -128,7 +136,12 @@ export async function getCurrentUser(): Promise<User | null> {
 }
 
 // Check if user is authenticated
-export async function isAuthenticated() {
+export async function isAuthenticated(): Promise<boolean> {
   const user = await getCurrentUser();
   return !!user;
+}
+
+export async function getUserById(id: string): Promise<User | null> {
+  const userRecord = await db.collection("users").doc(id).get();
+  return userRecord.data() as User;
 }

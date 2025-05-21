@@ -21,14 +21,7 @@ interface SavedMessage {
   content: string;
 }
 
-const Agent = ({
-  userName,
-  userId,
-  interviewId,
-  feedbackId,
-  type,
-  questions,
-}: AgentProps) => {
+const Agent = ({ userName, userId, interviewId, feedbackId, type, questions }: AgentProps) => {
   const router = useRouter();
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
   const [messages, setMessages] = useState<SavedMessage[]>([]);
@@ -127,9 +120,7 @@ const Agent = ({
     } else {
       let formattedQuestions = "";
       if (questions) {
-        formattedQuestions = questions
-          .map((question) => `- ${question}`)
-          .join("\n");
+        formattedQuestions = questions.map((question) => `- ${question}`).join("\n");
       }
 
       await vapi.start(interviewer, {
@@ -151,13 +142,7 @@ const Agent = ({
         {/* AI Interviewer Card */}
         <div className="card-interviewer">
           <div className="avatar">
-            <Image
-              src="/ai-avatar.png"
-              alt="profile-image"
-              width={65}
-              height={54}
-              className="object-cover"
-            />
+            <Image src="/ai-avatar.png" alt="profile-image" width={65} height={54} className="object-cover" />
             {isSpeaking && <span className="animate-speak" />}
           </div>
           <h3>AI Interviewer</h3>
@@ -180,6 +165,25 @@ const Agent = ({
 
       {messages.length > 0 && (
         <div className="transcript-border">
+          <div className="transcript flex flex-col space-y-4 overflow-y-auto">
+            {messages.map((message, index) => (
+              <div
+                key={index}
+                className={cn(
+                  "p-3 rounded-lg max-w-[80%]",
+                  "transition-opacity duration-500 opacity-0 animate-fadeIn opacity-100",
+                  message.role === "assistant" ? "bg-gray-100 self-start" : "bg-blue-100 self-end"
+                )}
+              >
+                <p>{message.content}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/*{messages.length > 0 && (  
+        <div className="transcript-border">
           <div className="transcript">
             <p
               key={lastMessage}
@@ -192,22 +196,17 @@ const Agent = ({
             </p>
           </div>
         </div>
-      )}
+      )}*/}
 
       <div className="w-full flex justify-center">
         {callStatus !== "ACTIVE" ? (
           <button className="relative btn-call" onClick={() => handleCall()}>
             <span
-              className={cn(
-                "absolute animate-ping rounded-full opacity-75",
-                callStatus !== "CONNECTING" && "hidden"
-              )}
+              className={cn("absolute animate-ping rounded-full opacity-75", callStatus !== "CONNECTING" && "hidden")}
             />
 
             <span className="relative">
-              {callStatus === "INACTIVE" || callStatus === "FINISHED"
-                ? "Call"
-                : ". . ."}
+              {callStatus === "INACTIVE" || callStatus === "FINISHED" ? "Call" : ". . ."}
             </span>
           </button>
         ) : (

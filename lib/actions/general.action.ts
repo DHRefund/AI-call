@@ -87,6 +87,10 @@ export async function getFeedbackByInterviewId(params: GetFeedbackByInterviewIdP
 
 export async function getLatestInterviews(params: GetLatestInterviewsParams): Promise<Interview[] | null> {
   const { userId, limit = 20 } = params;
+  if (!userId) {
+    console.error("userId is undefined or null");
+    return null;
+  }
 
   const interviews = await db
     .collection("interviews")

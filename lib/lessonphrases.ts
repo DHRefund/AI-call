@@ -1,0 +1,17 @@
+export const lessonPhrases = [
+  "Let's start learning!",
+  "Time to level up your skills!",
+  "You've got this!",
+  "Knowledge is power. Let's gain some!",
+  "Challenge accepted!",
+  "Let's crush this lesson!",
+  "Keep going, you're doing great!",
+  "Another step closer to mastery!",
+  "Ready to learn something new?",
+  "Let's go! No time like the present.",
+  "It's study time — shine on!",
+  "Every lesson brings you closer to success!",
+  "Let's fight for your goals!",
+  "Let's conquer this course together!",
+  "Practice makes perfect — let's practice!",
+];

@@ -47,6 +47,16 @@ interface InterviewCardProps {
   createdAt?: string;
 }
 
+interface LessonCardProps {
+  lessonId?: string;
+  userId?: string;
+  language?: stsring;
+  topic: string;
+  type: string;
+  level: string;
+  createdAt?: string;
+}
+
 interface AgentProps {
   userName: string;
   userId?: string;
