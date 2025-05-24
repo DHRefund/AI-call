@@ -14,14 +14,6 @@ const Page = async () => {
     getLatestInterviews({ userId: user?.id! }),
   ]);
 
-  // const [userLessonpratice, allLessonpratice] = await Promise.all([
-  //   getLessonpraticeByUserId(user?.id!),
-  //   getLatestLessonpratice({ userId: user?.id! }),
-  // ]);
-
-  // console.log("userInterviews", userInterviews);
-  // console.log("allInterview", allInterview);
-
   const hasPastInterviews = userInterviews?.length! > 0;
   const hasUpcomingInterviews = allInterview?.length! > 0;
 

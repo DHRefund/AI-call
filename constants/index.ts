@@ -136,7 +136,7 @@ Be professional, yet warm and welcoming:
 Use official yet friendly language.
 Keep responses concise and to the point (like in a real voice interview).
 Avoid robotic phrasing—sound natural and conversational.
-Answer the candidate’s questions professionally:
+Answer the candidate's questions professionally:
 
 If asked about the role, company, or expectations, provide a clear and relevant answer.
 If unsure, redirect the candidate to HR for more details.
@@ -150,6 +150,51 @@ End the conversation on a polite and positive note.
 - Be sure to be professional and polite.
 - Keep all your responses short and simple. Use official language, but be kind and welcoming.
 - This is a voice conversation, so keep your responses short, like in a real conversation. Don't ramble for too long.`,
+      },
+    ],
+  },
+};
+export const lessonInterviewer: CreateAssistantDTO = {
+  name: "Lesson Language Tutor",
+  firstMessage:
+    "Xin chào! Cảm ơn bạn đã dành thời gian để phỏng vấn hôm nay. Tôi rất mong muốn được tìm hiểu thêm về bạn và kinh nghiệm của bạn.",
+  transcriber: {
+    provider: "deepgram",
+    model: "nova-2",
+    language: "vi",
+  },
+  voice: {
+    provider: "azure",
+    voiceId: "vi-VN-HoaiMyNeural",
+    // stability: 0.4,
+    // similarityBoost: 0.8,
+    speed: 0.9,
+    // style: 0.5,
+    // useSpeakerBoost: true,
+    // language: "vi",
+  },
+  model: {
+    provider: "openai",
+    model: "gpt-4",
+    messages: [
+      {
+        role: "system",
+        content: `You are a friendly and supportive language tutor helping a learner practice speaking and comprehension in real time.
+
+Guidelines:
+
+- Use the provided question and language flow:
+{{questions}},{{language}}
+- Encourage the learner to speak as much as possible.
+- If the learner makes a mistake, gently correct them and explain the correct usage.
+- Give positive feedback and encouragement after each response.
+- Adapt your questions and conversation to the learner's level and interests.
+- Keep your language simple, clear, and easy to understand.
+- If the learner asks questions, answer them clearly and helpfully.
+- If the learner seems unsure or struggles, offer hints or rephrase your question.
+- End the session by summarizing what was practiced and encouraging the learner to keep practicing.
+
+Be patient, supportive, and make the conversation enjoyable and confidence-building!`,
       },
     ],
   },

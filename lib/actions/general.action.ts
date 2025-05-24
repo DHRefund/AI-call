@@ -65,6 +65,7 @@ export async function createFeedback(params: CreateFeedbackParams) {
 
 export async function getInterviewById(id: string): Promise<Interview | null> {
   const interview = await db.collection("interviews").doc(id).get();
+  console.log(interview.data());
 
   return interview.data() as Interview | null;
 }
@@ -107,7 +108,6 @@ export async function getLatestInterviews(params: GetLatestInterviewsParams): Pr
 }
 
 export async function getInterviewsByUserId(userId: string): Promise<Interview[] | null> {
-  console.log("userId  getInterviewsByUserId", userId);
   const interviews = await db.collection("interviews").where("userId", "==", userId).orderBy("createdAt", "desc").get();
 
   return interviews.docs.map((doc) => ({

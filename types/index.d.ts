@@ -24,6 +24,17 @@ interface Interview {
   type: string;
   finalized: boolean;
 }
+interface Lesson {
+  id: string;
+  topic: string;
+  level: string;
+  goal: string;
+  questions: string[];
+  language: string;
+  createdAt: string;
+  userId: string;
+  finalized?: boolean;
+}
 
 interface CreateFeedbackParams {
   interviewId: string;
@@ -65,6 +76,14 @@ interface AgentProps {
   type: "generate" | "interview";
   questions?: string[];
 }
+interface AgentLessonProps {
+  userName: string;
+  userId?: string;
+  language: string;
+  interviewId?: string;
+  feedbackId?: string;
+  questions?: string[];
+}
 
 interface RouteParams {
   params: Promise<Record<string, string>>;
@@ -78,6 +97,10 @@ interface GetFeedbackByInterviewIdParams {
 
 interface GetLatestInterviewsParams {
   userId: string;
+  limit?: number;
+}
+interface GetAdminLessonParams {
+  userId?: string;
   limit?: number;
 }
 

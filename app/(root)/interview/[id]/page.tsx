@@ -4,10 +4,7 @@ import { redirect } from "next/navigation";
 import Agent from "@/components/Agent";
 import { getRandomInterviewCover } from "@/lib/utils";
 
-import {
-  getFeedbackByInterviewId,
-  getInterviewById,
-} from "@/lib/actions/general.action";
+import { getFeedbackByInterviewId, getInterviewById } from "@/lib/actions/general.action";
 import { getCurrentUser } from "@/lib/actions/auth.action";
 import DisplayTechIcons from "@/components/DisplayTechIcons";
 
@@ -17,6 +14,8 @@ const InterviewDetails = async ({ params }: RouteParams) => {
   const user = await getCurrentUser();
 
   const interview = await getInterviewById(id);
+  // console.log(interview);
+
   if (!interview) redirect("/");
 
   const feedback = await getFeedbackByInterviewId({
@@ -42,9 +41,7 @@ const InterviewDetails = async ({ params }: RouteParams) => {
           <DisplayTechIcons techStack={interview.techstack} />
         </div>
 
-        <p className="bg-dark-200 px-4 py-2 rounded-lg h-fit">
-          {interview.type}
-        </p>
+        <p className="bg-dark-200 px-4 py-2 rounded-lg h-fit">{interview.type}</p>
       </div>
 
       <Agent
