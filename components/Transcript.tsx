@@ -35,7 +35,7 @@ const TranscriptCard: React.FC<TranscriptCardProps> = ({ messages, callStatus })
         {/* Transcript display */}
         {messages.length > 0 ? (
           <div
-            className="transcript flex-col-reverse overflow-y-auto max-h-96 h-96 transition-all duration-300 p-2 ease-in-out scroll-smooth scrollbar-hide"
+            className="transcript flex-col-reverse overflow-y-auto h-full  transition-all duration-300 p-2 ease-in-out scroll-smooth scrollbar-hide"
             ref={transcriptRef}
           >
             {messages.map((message, index) => (
