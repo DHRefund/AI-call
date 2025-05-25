@@ -4,14 +4,14 @@ import { generateText, generateObject } from "ai";
 import { google } from "@ai-sdk/google";
 
 import { db } from "@/firebase/admin";
-import { feedbackSchema } from "@/constants";
+import { lessonFeedbackSchema } from "@/constants";
 import { getRandomInterviewCover } from "@/lib/utils";
 
 // export async function getLessonPracticeByUserId(userId: string) {
 //   const lessonPractice = await db.collection("lessonpratice").where("userId", "==", userId).get();
 //   return lessonPractice.docs.map((doc) => doc.data());
 // }
-export async function getLessonPracticeByUserId(userId: string): Promise<Interview[] | null> {
+export async function getLessonPracticeByUserId(userId: string): Promise<Lesson[] | null> {
   const interviews = await db
     .collection("lessonpratice")
     .where("userId", "==", userId)
@@ -21,10 +21,10 @@ export async function getLessonPracticeByUserId(userId: string): Promise<Intervi
   return interviews.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
-  })) as Interview[];
+  })) as Lesson[];
 }
 
-export async function getAdminLessonPractice(params: GetAdminLessonParams): Promise<Interview[] | null> {
+export async function getAdminLessonPractice(params: GetAdminLessonParams): Promise<Lesson[] | null> {
   console.log("pa>>>>", params);
 
   // const { userId = "admin", limit = 20 } = params;
@@ -40,7 +40,7 @@ export async function getAdminLessonPractice(params: GetAdminLessonParams): Prom
   return interviews.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
-  })) as Interview[];
+  })) as Lesson[];
 }
 
 type CreateLessonPracticeInput = {
@@ -121,7 +121,7 @@ export async function createLessonFeedback(params: {
       model: google("gemini-2.0-flash-001", {
         structuredOutputs: false,
       }),
-      schema: feedbackSchema, // Có thể tạo schema riêng nếu muốn
+      schema: lessonFeedbackSchema, // Có thể tạo schema riêng nếu muốn
       prompt: `
         You are an AI language tutor analyzing a language practice session. Your task is to evaluate the learner based on structured categories. Be thorough and detailed in your analysis. If there are mistakes or areas for improvement, point them out.
         Transcript:

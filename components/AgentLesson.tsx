@@ -8,6 +8,12 @@ import { cn } from "@/lib/utils";
 import { vapi } from "@/lib/vapi.sdk";
 import { interviewer, lessonInterviewer } from "@/constants";
 import { createLessonFeedback } from "@/lib/actions/lesson.action";
+import {
+  vietNamLessonInterviewer,
+  englishLessonInterviewer,
+  japaneseLessonInterviewer,
+} from "@/constants/lessonByLanguage";
+import Transcript from "@/components/Transcript";
 
 enum CallStatus {
   INACTIVE = "INACTIVE",
@@ -118,10 +124,29 @@ const AgentLesson = ({ userName, userId, language, lessonId, feedbackId, questio
     if (questions) {
       formattedQuestions = questions.map((question) => `- ${question}`).join("\n");
     }
-    await vapi.start(lessonInterviewer, {
+
+    let selectedAssistant;
+    switch (language) {
+      case "Tiếng Việt":
+        selectedAssistant = vietNamLessonInterviewer;
+        break;
+      case "English":
+        selectedAssistant = englishLessonInterviewer;
+        break;
+      case "Japanese":
+        selectedAssistant = japaneseLessonInterviewer;
+        break;
+      default:
+        // Fallback to a default assistant or handle the error
+        console.error(`Assistant not found for language: ${language}`);
+        // You might want to set an error state or redirect here
+        setCallStatus(CallStatus.INACTIVE); // Reset status if assistant not found
+        return; // Stop the function execution
+    }
+
+    await vapi.start(selectedAssistant, {
       variableValues: {
         questions: formattedQuestions,
-        language: "language",
       },
     });
   };
@@ -140,72 +165,30 @@ const AgentLesson = ({ userName, userId, language, lessonId, feedbackId, questio
             <Image src="/ai-avatar.png" alt="profile-image" width={65} height={54} className="object-cover" />
             {isSpeaking && <span className="animate-speak" />}
           </div>
-          <h3>AI Interviewer</h3>
-        </div>
+          <h3>AI Assistant</h3>
+          <div className="w-full flex justify-center m-2">
+            {callStatus !== "ACTIVE" ? (
+              <button className="relative btn-call" onClick={() => handleCall()}>
+                <span
+                  className={cn(
+                    "absolute animate-ping rounded-full opacity-75",
+                    callStatus !== "CONNECTING" && "hidden"
+                  )}
+                />
 
-        {/* User Profile Card */}
-        <div className="card-border">
-          <div className="card-content">
-            <Image
-              src="/user-avatar.png"
-              alt="profile-image"
-              width={539}
-              height={539}
-              className="rounded-full object-cover size-[120px]"
-            />
-            <h3>{userName}</h3>
+                <span className="relative">
+                  {callStatus === "INACTIVE" || callStatus === "FINISHED" ? "Call" : ". . ."}
+                </span>
+              </button>
+            ) : (
+              <button className="btn-disconnect" onClick={() => handleDisconnect()}>
+                End
+              </button>
+            )}
           </div>
         </div>
-      </div>
 
-      {messages.length > 0 && (
-        <div className="transcript-border">
-          <div className="transcript flex flex-col space-y-4 overflow-y-auto">
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                className={cn(
-                  "p-3 rounded-lg max-w-[80%]",
-                  "transition-opacity duration-500 opacity-0 animate-fadeIn opacity-100",
-                  message.role === "assistant" ? "bg-gray-100 self-start" : "bg-blue-100 self-end"
-                )}
-              >
-                <p>{message.content}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {messages.length > 0 && (
-        <div className="transcript-border">
-          <div className="transcript">
-            <p
-              key={lastMessage}
-              className={cn("transition-opacity duration-500 opacity-0", "animate-fadeIn opacity-100")}
-            >
-              {lastMessage}
-            </p>
-          </div>
-        </div>
-      )}
-
-      <div className="w-full flex justify-center">
-        {callStatus !== "ACTIVE" ? (
-          <button className="relative btn-call" onClick={() => handleCall()}>
-            <span
-              className={cn("absolute animate-ping rounded-full opacity-75", callStatus !== "CONNECTING" && "hidden")}
-            />
-
-            <span className="relative">
-              {callStatus === "INACTIVE" || callStatus === "FINISHED" ? "Call" : ". . ."}
-            </span>
-          </button>
-        ) : (
-          <button className="btn-disconnect" onClick={() => handleDisconnect()}>
-            End
-          </button>
-        )}
+        <Transcript messages={messages} callStatus={callStatus} />
       </div>
     </>
   );

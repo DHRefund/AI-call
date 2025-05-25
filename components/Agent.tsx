@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { vapi } from "@/lib/vapi.sdk";
 import { interviewer } from "@/constants";
 import { createFeedback } from "@/lib/actions/general.action";
+import Transcript from "@/components/Transcript";
 
 enum CallStatus {
   INACTIVE = "INACTIVE",
@@ -163,40 +164,7 @@ const Agent = ({ userName, userId, interviewId, feedbackId, type, questions }: A
         </div>
       </div>
 
-      {messages.length > 0 && (
-        <div className="transcript-border">
-          <div className="transcript flex flex-col space-y-4 overflow-y-auto">
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                className={cn(
-                  "p-3 rounded-lg max-w-[80%]",
-                  "transition-opacity duration-500 opacity-0 animate-fadeIn opacity-100",
-                  message.role === "assistant" ? "bg-gray-100 self-start" : "bg-blue-100 self-end"
-                )}
-              >
-                <p>{message.content}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/*{messages.length > 0 && (  
-        <div className="transcript-border">
-          <div className="transcript">
-            <p
-              key={lastMessage}
-              className={cn(
-                "transition-opacity duration-500 opacity-0",
-                "animate-fadeIn opacity-100"
-              )}
-            >
-              {lastMessage}
-            </p>
-          </div>
-        </div>
-      )}*/}
+      <Transcript messages={messages} callStatus={callStatus} />
 
       <div className="w-full flex justify-center">
         {callStatus !== "ACTIVE" ? (

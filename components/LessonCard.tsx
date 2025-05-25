@@ -5,13 +5,15 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 
 import { cn, getRandomInterviewCover } from "@/lib/utils";
-import { getFeedbackByInterviewId } from "@/lib/actions/general.action";
+import { getFeedbackByLessonId } from "@/lib/actions/lesson.action";
 import { lessonPhrases } from "@/lib/lessonphrases";
 const LessonCard = async ({ lessonId, userId, topic, level, type, createdAt, language }: LessonCardProps) => {
+  console.log("lessonid", lessonId);
+
   const feedback =
     userId && lessonId
-      ? await getFeedbackByInterviewId({
-          interviewId: lessonId,
+      ? await getFeedbackByLessonId({
+          lessonId: lessonId,
           userId,
         })
       : null;

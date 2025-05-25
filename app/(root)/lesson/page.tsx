@@ -1,9 +1,8 @@
-import CreateLessonCard from "@/components/CreateLessonCard";
 import LessonCard from "@/components/LessonCard";
 import { getCurrentUser } from "@/lib/actions/auth.action";
-import { Dialog, DialogTrigger, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { getAdminLessonPractice, getLessonPracticeByUserId } from "@/lib/actions/lesson.action";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 const Page = async () => {
   const user = await getCurrentUser();
@@ -21,25 +20,19 @@ const Page = async () => {
       <section className="flex flex-col gap-6 mt-8">
         <div className="flex items-center gap-4 justify-between">
           <h2>Your Lesson</h2>
-          <Dialog>
-            <DialogTrigger asChild>
-              <button className="btn-primary px-4 py-2 rounded-md font-semibold">
-                + Create your own lesson with more languages
-              </button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogTitle>Create a new lesson</DialogTitle>
-              <CreateLessonCard userId={user.id} />
-            </DialogContent>
-          </Dialog>
+          <Link href="/lesson/generate">
+            <button className="btn-primary px-4 py-2 rounded-md font-semibold">
+              + Create your own lesson with more languages
+            </button>
+          </Link>
         </div>
         <div className="interviews-section">
           {userLessonPractice && userLessonPractice.length > 0 ? (
-            userLessonPractice.map((lessonPractice) => (
+            userLessonPractice.map((lessonPractice, index) => (
               <LessonCard
                 key={lessonPractice.id}
                 userId={user.id}
-                lessonId={lessonPractice.id}
+                lessonId={userLessonPractice[index].id}
                 topic={lessonPractice.topic}
                 type="notType"
                 language={lessonPractice?.language}

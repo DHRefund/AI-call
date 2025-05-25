@@ -1,5 +1,12 @@
 import { CreateAssistantDTO } from "@vapi-ai/web/dist/api";
 import { z } from "zod";
+export const languages = [
+  { code: "English", label: "English" },
+  { code: "Japanese", label: "日本語 (Japanese)" },
+  { code: "Tiếng Việt", label: "Tiếng Việt" },
+  { code: "Français", label: "Français" },
+  { code: "Chinese", label: "Chinese" },
+];
 
 export const mappings = {
   "react.js": "react",
@@ -157,7 +164,7 @@ End the conversation on a polite and positive note.
 export const lessonInterviewer: CreateAssistantDTO = {
   name: "Lesson Language Tutor",
   firstMessage:
-    "Xin chào! Cảm ơn bạn đã dành thời gian để phỏng vấn hôm nay. Tôi rất mong muốn được tìm hiểu thêm về bạn và kinh nghiệm của bạn.",
+    "Xin chào! Cảm ơn bạn đã dành thời gian để phỏng vấn hôm nay. Tôi rất mong muốn được giúp đỡ bạn trong việc học tiếng việt. Nếu bạn sẵn sàng bắt đầu hạy cho tôi biết nhé!",
   transcriber: {
     provider: "deepgram",
     model: "nova-2",
@@ -166,12 +173,7 @@ export const lessonInterviewer: CreateAssistantDTO = {
   voice: {
     provider: "azure",
     voiceId: "vi-VN-HoaiMyNeural",
-    // stability: 0.4,
-    // similarityBoost: 0.8,
     speed: 0.9,
-    // style: 0.5,
-    // useSpeakerBoost: true,
-    // language: "vi",
   },
   model: {
     provider: "openai",
@@ -225,6 +227,40 @@ export const feedbackSchema = z.object({
     }),
     z.object({
       name: z.literal("Confidence and Clarity"),
+      score: z.number(),
+      comment: z.string(),
+    }),
+  ]),
+  strengths: z.array(z.string()),
+  areasForImprovement: z.array(z.string()),
+  finalAssessment: z.string(),
+});
+
+export const lessonFeedbackSchema = z.object({
+  totalScore: z.number(),
+  categoryScores: z.tuple([
+    z.object({
+      name: z.literal("Pronunciation"),
+      score: z.number(),
+      comment: z.string(),
+    }),
+    z.object({
+      name: z.literal("Vocabulary"),
+      score: z.number(),
+      comment: z.string(),
+    }),
+    z.object({
+      name: z.literal("Grammar"),
+      score: z.number(),
+      comment: z.string(),
+    }),
+    z.object({
+      name: z.literal("Fluency & Responsiveness"),
+      score: z.number(),
+      comment: z.string(),
+    }),
+    z.object({
+      name: z.literal("Confidence & Engagement"),
       score: z.number(),
       comment: z.string(),
     }),

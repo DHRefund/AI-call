@@ -135,25 +135,6 @@ const CreateLessonCard = ({ userId }: CreateLessonCardProps) => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        {/* <div>
-          <Label htmlFor="type" className="mb-1 font-semibold text-sm">
-            Type
-          </Label>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button type="button" variant="outline" className="w-full justify-between">
-                {type}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {types.map((t) => (
-                <DropdownMenuItem key={t} onSelect={() => setType(t)}>
-                  {t}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div> */}
         <div>
           <Label htmlFor="language" className="mb-1 font-semibold text-sm">
             Language
@@ -180,7 +161,6 @@ const CreateLessonCard = ({ userId }: CreateLessonCardProps) => {
         disabled={creating}
       >
         {creating ? "Creating..." : "Go get them !!!"}
-        {/* lessonPhrases[Math.floor(Math.random() * lessonPhrases.length)] */}
       </Button>
     </form>
   );

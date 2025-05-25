@@ -10,11 +10,13 @@ import DisplayTechIcons from "@/components/DisplayTechIcons";
 
 const LessonDetails = async ({ params }: RouteParams) => {
   const { id } = await params;
+  // console.log("id", id);
 
   const user = await getCurrentUser();
 
   //   Lấy interview theo id
   const lesson = await getLessonById(id);
+  console.log(lesson);
 
   //   Nếu vẫn không có, redirect về trang chủ
   if (!lesson) {
@@ -37,7 +39,7 @@ const LessonDetails = async ({ params }: RouteParams) => {
         userName={user!.name}
         userId={user?.id}
         language={lesson.language}
-        lessonId={lesson.id}
+        lessonId={id}
         questions={lesson.questions}
         feedbackId={lesson.feedbackId}
       />
