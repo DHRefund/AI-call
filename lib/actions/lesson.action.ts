@@ -56,7 +56,7 @@ export async function createLessonPractice({ topic, level, goal, userId, languag
 
   try {
     const { text: questions } = await generateText({
-      model: google("gemini-2.0-flash-001"),
+      model: google("gemini-2.5-flash-lite"),
       prompt: `Prepare questions for a talk about ${topic} with ${language}.
           The level of the talk is ${level}.
           The goal of the talk is ${goal}.
@@ -74,7 +74,7 @@ export async function createLessonPractice({ topic, level, goal, userId, languag
       level,
       goal,
       language,
-      questions: JSON.parse(questions),
+      questions: JSON.parse(questions.match(/\[[\s\S]*\]/)?.[0] ?? "[]"),
       userId: userId,
       finalized: true,
       coverImage: getRandomInterviewCover(),
@@ -118,7 +118,7 @@ export async function createLessonFeedback(params: {
 
     // Prompt đánh giá buổi học ngôn ngữ
     const { object } = await generateObject({
-      model: google("gemini-2.0-flash-001", {
+      model: google("gemini-2.5-flash-lite", {
         structuredOutputs: false,
       }),
       schema: lessonFeedbackSchema, // Có thể tạo schema riêng nếu muốn
